@@ -18,4 +18,4 @@
 
 ## Тестирование
 
-Для тестирования всех решений используется команда `python -m unittest discover -p "problem*.py"`.
+Для тестирования всех решений используется команда `python -m unittest discover -p "problem*.py" -v`.

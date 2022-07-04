@@ -1,7 +1,7 @@
 import unittest
 from .utils import *
 from .utils.data import *
-from answers import answers27
+from answers import get_correct_answer
 
 def bruteforce(path: str):
     with open(path) as f:
@@ -48,7 +48,7 @@ def solve():
 class Problem7(unittest.TestCase):
     def test_problem7(self):
         assert test_with_bruteforce(bruteforce, efficient, positive_numbers)
-        assert solve() == answers27[7]
+        assert solve() == get_correct_answer(27, 7)
 
 if __name__ == '__main__':
     print(solve())
