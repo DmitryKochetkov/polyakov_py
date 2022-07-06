@@ -1,7 +1,7 @@
 import pandas as pd
 import argparse
 
-answers = pd.read_csv('answers.csv')
+answers = pd.read_csv('./data/answers.csv', encoding='windows-1251')
 answers.index += 1
 
 def get_correct_answer(problem_type: int, problem_number) -> str:
