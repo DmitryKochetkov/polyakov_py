@@ -53,6 +53,9 @@ if __name__ == '__main__':
             for name in tqdm(f.namelist()):
                 try:
                     f.extract(name, path="./data/" + folder_name + "/")
+                    if name.split('.')[-1] == 'zip':
+                        with zipfile.ZipFile('./data/' + folder_name + "/" + name, "r") as f2:
+                            f2.extractall('./data/' + folder_name + "/" + name.split('.')[0])
                 except zipfile.BadZipfile:
                     print('\nUnable to extract file', name)
 
