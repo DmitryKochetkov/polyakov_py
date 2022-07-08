@@ -29,6 +29,9 @@ jobs:
         python -m pip install --upgrade pip 
         python -m pip install pandas
         python -m pip install tqdm
+        python -m pip install argparse
+        python -m pip install requests
+        
         
     - name: Download data from kpolyakov.spb.ru
       run: 
