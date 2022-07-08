@@ -3,8 +3,7 @@ from tqdm import tqdm
 def generate_paths(problem_number):
     result = dict()
     for letter in ['A', 'B']:
-        # result[letter] = '../data/27data/{}/27-{}{}.txt'.format(problem_number, problem_number, letter)
-        result[letter] = 'data/27data/{}/27-{}{}.txt'.format(problem_number, problem_number, letter)
+        result[letter] = './data/27data/{}/27-{}{}.txt'.format(problem_number, problem_number, letter)
     
     return result
 
