@@ -23,8 +23,9 @@ def test_with_bruteforce(f_bruteforce, f, input_generator, verbose=False):
     path = 'tmp.txt'
     
     failed_tests = 0
-    print('\nRunning random tests...')
-    for test_id in tqdm(range(1, 1000+1)):
+    # print('\nRunning random tests...')
+    # for test_id in tqdm(range(1, 1000+1)):
+    for test_id in range(1, 1000+1):
         input_generator(path)
         expected = f_bruteforce(path)
         actual = f(path)
