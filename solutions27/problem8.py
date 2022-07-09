@@ -11,11 +11,11 @@ def bruteforce(path: str):
         for i in range(n):
             a.append(int(f.readline()))
         
-        result = 0
+        result = 10 ** 20
         for i in range(n):
-            for j in range(i+1, n):
-                x = a[i] * a[j]
-                if x % 7 == 0 and x % 49 != 0 and x > result:
+            for j in range(i+5, n):
+                x = (a[i] ** 2) + (a[j] ** 2)
+                if x < result:
                     result = x
 
         return result
@@ -23,20 +23,23 @@ def bruteforce(path: str):
 def efficient(path: str):
     with open(path) as f:
         n = int(f.readline())
-        m7 = 0
-        m = 0
+        window = [0] * 5
+        answer = 10 ** 20
+        m = None
 
         for i in range(n):
+            if i >= 5 and (m == None or window[i % 5] < m):
+                m = window[i % 5]
             x = int(f.readline())
-            if x % 7 == 0 and x % 49 != 0 and x > m7:
-                m7 = x
-            elif x % 7 != 0 and x > m:
-                m = x
+            window[i % 5] = x
 
-        return m7 * m
+            if m != None:
+                answer = min(answer, m ** 2 + window[i % 5] ** 2)
+
+        return answer
 
 def solve():
-    paths = generate_paths(7)
+    paths = generate_paths(8)
     solutions = {}
 
     for letter in ['A', 'B']:
@@ -45,9 +48,9 @@ def solve():
 
     return '{} {}'.format(*solutions.values())
 
-class Problem7(unittest.TestCase):
+class Problem8(unittest.TestCase):
     def test_answer(self):
-        assert solve() == get_correct_answer(27, 7)
+        assert solve() == get_correct_answer(27, 8)
 
     def test_random(self):
         assert test_with_bruteforce(bruteforce, efficient, positive_numbers)
