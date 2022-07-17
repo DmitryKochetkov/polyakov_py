@@ -20,15 +20,15 @@ if __name__ == '__main__':
     dirpath = Path('./data')
     if dirpath.exists() and dirpath.is_dir():
         if args.f != True:
-            print('Directory ./data already exists. Use -f key to remove it.')
+            print('Directory {} already exists. Use -f key to remove it.'.format(dirpath.absolute()))
             exit()
         
         shutil.rmtree(dirpath)
-        print('Erased ./data directory.')
+        print('Erased directory {}.'.format(dirpath.absolute()))
 
     if not dirpath.exists():
         dirpath.mkdir()
-        print('Created empty ./data directory')
+        print('Created empty directory {}'.format(dirpath.absolute()))
         print()
 
     print('Downloading files...')

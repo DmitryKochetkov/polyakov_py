@@ -36,6 +36,13 @@ jobs:
     - name: Download data from kpolyakov.spb.ru
       run: 
         python ./download_data.py
+    
     - name: Test with unittest
       run: |
-        python -m unittest discover -p "problem*.py" -v
+        python -m run_all_tests
+        
+    - name: Save artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: failed_tests
+        path: tmp

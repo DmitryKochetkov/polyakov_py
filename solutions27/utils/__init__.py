@@ -1,4 +1,6 @@
 from tqdm import tqdm
+import shutil
+from pathlib import Path
 
 def generate_paths(problem_number):
     result = dict()
@@ -9,7 +11,7 @@ def generate_paths(problem_number):
 
 def test_with_bruteforce(f_bruteforce, f, input_generator, verbose=False):
     """
-    Тестирует эффектвный алгоритм случайными тестами при помощи не эффективного
+    Тестирует эффективный алгоритм случайными тестами при помощи не эффективного
 
     ## Параметры
 
@@ -32,11 +34,20 @@ def test_with_bruteforce(f_bruteforce, f, input_generator, verbose=False):
         
         if expected != actual:
             failed_tests += 1
-            # print('Test {} failed. Expected {}, actual {}'.format(test_id, expected, actual))
+            test_info_path = "./tmp/{}".format(f.__module__)
+            Path(test_info_path).mkdir(parents=True, exist_ok=True)
+            
+            if verbose:
+                print('Test {} failed. Expected {}, actual {}'.format(test_id, expected, actual))
+            
+            shutil.copy('tmp.txt', '{}/test{}_data.txt'.format(test_info_path, test_id))
+            with open('{}/test{}_info.txt'.format(test_info_path, test_id), 'w+') as test_case_info:
+                test_case_info.write('Expected {}, actual {}'.format(expected, actual))
 
         if failed_tests >= 10:
-            # print('Testing is stopped after 10 failed tests.')
+            if verbose:
+                print('Stopped random testing after 10 failed tests.')
             break
-    
+
     return failed_tests == 0
 
