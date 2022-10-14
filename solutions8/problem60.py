@@ -2,21 +2,22 @@ from itertools import *
 import unittest
 from answers import get_correct_answer
 
-def solve():
+def check_word(word):
     alphabet_middle = ['А', 'Б', 'В', 'Г']
     alphabet_first_and_last = ['Э', 'Ю', 'Я']
+
+    if word[0] not in alphabet_first_and_last:
+        return False
+    
+    if word[-1] not in alphabet_first_and_last:
+        return False
+    
+    return all([letter in alphabet_middle for letter in word[1:-1]])
+
+def solve():
     answer = 0
 
-    def check_word(word):
-        if word[0] not in alphabet_first_and_last:
-            return False
-        
-        if word[-1] not in alphabet_first_and_last:
-            return False
-        
-        return all([letter in alphabet_middle for letter in word[1:-1]])
-
-    for word in product(alphabet_middle + alphabet_first_and_last, repeat=5):
+    for word in product('АБВГЭЮЯ', repeat=5):
         if check_word(word):
             answer += 1
 
