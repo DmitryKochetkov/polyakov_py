@@ -1,4 +1,4 @@
-from itertools import *
+
 import unittest
 from answers import get_correct_answer
 
