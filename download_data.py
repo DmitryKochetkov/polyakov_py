@@ -7,7 +7,7 @@ from zipfile import ZIP_DEFLATED, ZIP_LZMA
 import argparse
 
 root_url = "https://kpolyakov.spb.ru/download/"
-archives_names = ['24data.zip', '26data.zip', '27data.zip']
+archives_names = ['22data.zip', '24data.zip', '26data.zip', '27data.zip']
 file_names = ['answers.csv'] + archives_names
 
 if __name__ == '__main__':

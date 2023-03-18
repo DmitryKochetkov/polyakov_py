@@ -3,6 +3,10 @@ import argparse
 
 answers = pd.read_csv('./data/answers.csv', encoding='windows-1251')
 answers.index += 1
+# Первая строчка ответов на 19-21 задачи содержит какую-то ссылку на YouTube
+answers.iloc[0, 0] = '17'
+answers.iloc[0, 1] = '29 32'
+answers.iloc[0, 2] = '28'
 
 def get_correct_answer(problem_type: int, problem_number) -> str:
     return answers[str(problem_type)][problem_number]
