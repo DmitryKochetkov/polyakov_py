@@ -9,6 +9,15 @@ answers.iloc[0, 1] = '29 32'
 answers.iloc[0, 2] = '28'
 
 def get_correct_answer(problem_type: int, problem_number) -> str:
+    """
+    Возвращает правильный ответ на задачу Полякова из таблицы ответов.
+
+    Аргументы:
+        problem_type (int): Тип задачи, от 1 до 27.
+        problem_number (int): Номер задачи из файла ege<problem_type>.doc
+
+    Возвращаемое значение: строка с правильным ответом.
+    """
     return answers[str(problem_type)][problem_number]
 
 if __name__ == "__main__":
