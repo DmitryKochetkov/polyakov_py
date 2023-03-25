@@ -36,5 +36,5 @@ class Problem1(unittest.TestCase):
         assert actual == expected, f'Actual: {actual}, expected: {expected}'
 
 if __name__ == '__main__':
-    print(i, used_space)
+    print(n_saved, max_file)
 
