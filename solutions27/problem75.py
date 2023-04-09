@@ -8,20 +8,24 @@ def bruteforce(a):
     """
     n = len(a)
     m = 0
-    answer = n
+    result_length = n
     result_subsegment = None
+    k = 43
     for l in range(n):
         for r in range(l+1, n):
-            s = sum(a[l:(r+1)])
-            if s % 43 == 0:
+            s = sum(a[l:r+1])
+            if s % k == 0:
                 if s > m:
                     m = s
                     result_subsegment = (l, r)
-                    answer = r-l+1
-                elif s == m:
+                    result_length = r-l+1
+                elif s == m and r-l+1 < result_length:
+                    result_length = r-l+1
                     result_subsegment = (l, r)
-                    answer = min(answer, r-l+1)
-    return answer, result_subsegment
+
+    l, r = result_subsegment
+    assert sum(a[l:(r+1)]) % k == 0, f'не пройдена финальная проверка ответа {result_subsegment}: s % {k} = {sum(a[l:r+1]) % k == 0}'
+    return result_subsegment
 
 
 def efficient(a):
@@ -72,12 +76,13 @@ def efficient(a):
                 m = s
                 result_subsegment = (l, r)
                 answer = length
-                # result_subsegment = (None, None)
             elif s == m and length < answer:
                 result_subsegment = (l, r)
                 answer = length
     
-    return answer, result_subsegment
+    l, r = result_subsegment
+    assert sum(a[l:(r+1)]) % k == 0, f'не пройдена финальная проверка ответа {result_subsegment}: s % k = {sum(a[l:(r+1)]) % k == 0}'
+    return result_subsegment
 
 
 dataA = []
@@ -92,8 +97,14 @@ with open('./data/27data/75/27-75b.txt') as f:
     for line in f.readlines():
         dataB.append(int(line))
 
-print('Bruteforce решение пункта A: ', bruteforce(dataA))
-print('Эффективное решение пункта A: ', efficient(dataA))
+l, r = bruteforce(dataA)
+print(f'Переборное решение пункта A: отрезок {(l, r)}, длина {r-l+1}, сумма {sum(dataA[l:r+1])}')
+l, r = efficient(dataA)
+print(f'Эффективное решение пункта A: отрезок {(l, r)}, длина {r-l+1}, сумма {sum(dataA[l:r+1])}')
+# Интересно, что bruteforce и effecient нашли в файле A разные отрезки, но при этом в обоих сумма кратна 43 и длина наименьшая.
+# То есть подходящих под правильный ответ отрезков может быть несколько, но длина у них одинаковая.
+
 print(sum(dataA[587:776]), sum(dataA[587:776]) % 43)
 print(sum(dataA[401:586]), sum(dataA[401:586]) % 43)
-print('Эффективное решение пункта B: ', efficient(dataB))
+l, r = efficient(dataB)
+print(f'Эффективное решение пункта B: отрезок {(l, r)}, длина {r-l+1}, сумма {sum(dataB[l:r+1])}')
