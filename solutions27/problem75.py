@@ -1,4 +1,4 @@
-# 75 задача из файла 27 с сайта Полякова
+from random import randint
 
 def bruteforce(a):
     """
@@ -23,8 +23,9 @@ def bruteforce(a):
                     result_length = r-l+1
                     result_subsegment = (l, r)
 
-    l, r = result_subsegment
-    assert sum(a[l:(r+1)]) % k == 0, f'не пройдена финальная проверка ответа {result_subsegment}: s % {k} = {sum(a[l:r+1]) % k == 0}'
+    if result_subsegment != None:
+        l, r = result_subsegment
+        assert sum(a[l:(r+1)]) % k == 0, f'не пройдена финальная проверка ответа {result_subsegment}: s % {k} = {sum(a[l:r+1]) % k == 0}'
     return result_subsegment
 
 
@@ -52,16 +53,17 @@ def efficient(a):
 
     k = 43
     first = [-1] * k # first[i] - наимешьний индекс элемента из p, такой что a[first[i]] % k == i.
-    for i in range(1, n):
+    # for i in range(1, n):
+    for i in range(n):
         q = p[i] % k
         if first[q] == -1:
             first[q] = i
     m = 0
     answer = n
-    result_subsegment = (None, None)
+    result_subsegment = None
 
     # перебираем ТОЛЬКО правую границу подотрезка
-    for r in range(n-1):
+    for r in range(n):
         # Вычислим левую границу. 
         # Для того, чтобы сумма a[l:(r+1)] была кратна k, нужно взять в качестве левого индекса такой l, что p[l] % k == p[r] % k.
         # При этом для максимизации суммы нужно брать первый такой индекс.
@@ -80,10 +82,37 @@ def efficient(a):
                 result_subsegment = (l, r)
                 answer = length
     
-    l, r = result_subsegment
-    assert sum(a[l:(r+1)]) % k == 0, f'не пройдена финальная проверка ответа {result_subsegment}: s % k = {sum(a[l:(r+1)]) % k == 0}'
+    if result_subsegment != None:
+        l, r = result_subsegment
+        assert sum(a[l:(r+1)]) % k == 0, f'не пройдена финальная проверка ответа {result_subsegment}: s % k = {sum(a[l:(r+1)]) % k == 0}'
     return result_subsegment
 
+def test(a):
+    """
+    Тестирует решения на заданном массиве.
+    """
+    expected = bruteforce(a)
+    actual = efficient(a)
+    if expected == None and actual == None:
+        return
+    assert expected != None and actual != None, f'Не пройден тест на данных {a}. Bruteforce: {expected}, efficient {actual}.'
+
+    l_expected = expected[1] - expected[0]
+    l_actual = actual[1] - actual[0]
+    s_expected = sum(a[expected[0]:expected[1]+1])
+    s_actual = sum(a[actual[0]:actual[1]+1])
+    assert l_expected == l_actual, f'Не пройден тест на данных {a}. Bruteforce: {expected} - сумма {s_expected}, efficient {actual} - сумма {s_actual}.'
+
+def random_tests(test_count = 20):
+    print(f'Запуск {test_count} случайных тестов...')
+    for test_id in range(1, test_count+1):
+        # генерирурем случайные данные
+        n = 12
+        a = [randint(1, 100) for i in range(n)]
+        test(a)
+        print(f"Пройден тест #{test_id} на данных {a}")
+    
+    print(f"Случайные тесты пройдены!")
 
 dataA = []
 dataB = []
@@ -97,6 +126,7 @@ with open('./data/27data/75/27-75b.txt') as f:
     for line in f.readlines():
         dataB.append(int(line))
 
+random_tests()
 l, r = bruteforce(dataA)
 print(f'Переборное решение пункта A: отрезок {(l, r)}, длина {r-l+1}, сумма {sum(dataA[l:r+1])}')
 l, r = efficient(dataA)
@@ -106,3 +136,4 @@ print(sum(dataA[587:776]), sum(dataA[587:776]) % 43)
 print(sum(dataA[401:586]), sum(dataA[401:586]) % 43)
 l, r = efficient(dataB)
 print(f'Эффективное решение пункта B: отрезок {(l, r)}, длина {r-l+1}, сумма {sum(dataB[l:r+1])}')
+
