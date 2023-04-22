@@ -1,54 +1,70 @@
-import unittest
-from .utils import *
-from .utils.data import *
-from answers import get_correct_answer
+from random import randint
 
-def bruteforce(path: str):
-    with open(path) as f:
-        n = int(f.readline())
-        a = list()
+def bruteforce(a):
+    n = len(a)
+    result = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            x = a[i] * a[j]
+            if x % 7 == 0 and x % 49 != 0 and x > result:
+                result = x
 
-        for i in range(n):
-            a.append(int(f.readline()))
-        
-        result = 0
-        for i in range(n):
-            for j in range(i+1, n):
-                x = a[i] * a[j]
-                if x % 7 == 0 and x % 49 != 0 and x > result:
-                    result = x
+    return result
 
-        return result
+def efficient(a):
+    m7 = 0
+    m = 0
+    n = len(a)
 
-def efficient(path: str):
-    with open(path) as f:
-        n = int(f.readline())
-        m7 = 0
-        m = 0
+    for x in a:
+        if x % 7 == 0 and x % 49 != 0 and x > m7:
+            m7 = x
+        elif x % 7 != 0 and x > m:
+            m = x
 
-        for i in range(n):
-            x = int(f.readline())
-            if x % 7 == 0 and x % 49 != 0 and x > m7:
-                m7 = x
-            elif x % 7 != 0 and x > m:
-                m = x
+    return m7 * m
+    
+def test_efficient(a):
+    """
+    Тестирует решения на заданном массиве.
+    """
+    expected = bruteforce(a)
+    actual = efficient(a)
+    assert expected == actual, f'Expected {expected}, actual {actual}'
+    return actual
 
-        return m7 * m
 
-def solve():
-    paths = generate_paths(7)
-    solutions = {}
+def random_tests(test_count=20):
+    print(f'Запуск {test_count} случайных тестов...')
+    for test_id in range(1, test_count+1):
+        # генерирурем случайные данные
+        n = 12
+        a = [randint(1, 100) for i in range(n)]
+        answer = test_efficient(a)
+        print(f"Пройден тест #{test_id} на данных {a}. Ответ {answer}")
 
-    for letter in ['A', 'B']:
-        with open(paths[letter]) as f:
-            solutions[letter] = efficient(paths[letter])
+    print(f"Случайные тесты пройдены!")
 
-    return '{} {}'.format(*solutions.values())
+dataA = []
+dataB = []
 
-class Problem7(unittest.TestCase):
-    def test_problem7(self):
-        assert test_with_bruteforce(bruteforce, efficient, positive_numbers)
-        assert solve() == get_correct_answer(27, 7)
+with open('./data/27data/7/27-7a.txt') as f:
+    for line in f.readlines():
+        dataA.append(int(line))
 
-if __name__ == '__main__':
-    print(solve())
+with open('./data/27data/7/27-7b.txt') as f:
+    for line in f.readlines():
+        dataB.append(int(line))
+
+print(f'Длина массива A:', len(dataA))
+print(f'Длина массива B:', len(dataB))
+
+# test_bruteforce()
+print(f'bruteforce, список A:', bruteforce(dataA))
+
+random_tests(test_count=1000)
+
+print(f'efficient, список A:', efficient(dataA))
+print(f'efficient, список B:', efficient(dataB))
+
+
